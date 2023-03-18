@@ -26,18 +26,14 @@ def is_folder_git_repo(folder):
 
 def get_git_repo_projects_in_folder(folder):
     """Returns a list of absolute paths to folders in specified folder that are not hidden and are git repositories."""
-    project_dirs = []
-    # Loops through the items in the specified folder.
-    for item in os.listdir(folder):
-        # Assembles the path to each item in the folder.
-        path = f"{folder}/{item}"
-        """
-        Determines if it is supposed to be a hidden folder "." on a Mac or Linux machine and if it is a git repository.
-        If it meets both criteria it adds the absolute path to a list of paths for a project. If not it gets excluded.
-        """
-        if not item.startswith(".") and is_folder_git_repo(path):
-            # Adds absolute path to the list
-            project_dirs.append(path)
+
+    """
+    Uses list comprehension to create a list that contains the absolute paths for directories that are not hidden
+    and that are git repositories.
+    """
+    project_dirs = [f"{folder}/{item}"
+                    for item in os.listdir(folder)
+                    if not item.startswith(".") and is_folder_git_repo(f"{folder}/{item}")]
 
     return project_dirs
 
@@ -51,4 +47,3 @@ def get_git_projects():
     all_projects.extend(get_git_repo_projects_in_folder(get_pycharm_projects_dir()))
 
     return all_projects
-
