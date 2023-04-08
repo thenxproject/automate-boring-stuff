@@ -40,12 +40,12 @@ def update_apps_windows():
 
 if __name__ == '__main__':
     # Detects OS and runs updates for matches.
-    if os.uname().sysname == "Linux":
+    if platform.system() == "Linux":
         if "Ubuntu" in os.uname().version:
             update_apps_ubuntu()
         elif "Debian" in os.uname().version:
             update_apps_debian()
-    elif os.uname().sysname == "Darwin":
+    elif platform.system() == "Darwin":
         update_apps_mac_os_x()
     elif platform.system() == "Windows":
         update_apps_windows()
