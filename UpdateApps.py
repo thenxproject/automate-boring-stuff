@@ -36,7 +36,7 @@ def update_apps_windows():
 
     os.system("winget upgrade -h –all --accept-package-agreements --accept-source-agreements")
     os.system("wuauclt /detectnow /updatenow")
-m
+
 
 if __name__ == '__main__':
     # Detects OS and runs updates for matches.
