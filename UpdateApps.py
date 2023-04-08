@@ -1,4 +1,5 @@
 import os
+import platform
 
 
 def update_apps_debian():
@@ -27,6 +28,14 @@ def update_apps_mac_os_x():
     # Runs Homebrew apt updates.
     os.system("brew update")
     os.system("brew upgrade")
+    os.system("softwareupdate -l -i -a")
+
+
+def update_apps_windows():
+    """Updates apps installed through Windows app store."""
+
+    os.system("winget upgrade -h –all --accept-package-agreements")
+    os.system("wuauclt /detectnow /updatenow")
 
 
 if __name__ == '__main__':
@@ -38,3 +47,5 @@ if __name__ == '__main__':
             update_apps_debian()
     elif os.uname().sysname == "Darwin":
         update_apps_mac_os_x()
+    elif platform.system() == "Windows":
+        update_apps_windows()
