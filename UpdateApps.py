@@ -6,11 +6,11 @@ def update_apps_debian():
     """Update app installed through apt on Debian."""
 
     # Runs a series of commands as sudo to install updates.
-    os.system("yes | sudo apt update")
-    os.system("yes | sudo apt upgrade")
-    os.system("yes | sudo apt dist-upgrade")
-    os.system("yes | sudo apt autoremove")
-    os.system("yes | sudo apt autoclean")
+    os.system("sudo apt update -y")
+    os.system("sudo apt upgrade -y")
+    os.system("sudo apt dist-upgrade -y")
+    os.system("sudo apt autoremove -y")
+    os.system("sudo apt autoclean -y")
 
 
 def update_apps_ubuntu():
