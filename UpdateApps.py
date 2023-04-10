@@ -23,11 +23,12 @@ def update_apps_ubuntu():
 
 
 def update_apps_mac_os_x():
-    """Updates aps installed through Homebrew."""
+    """Updates aps installed through Homebrew, and system updates."""
 
     # Runs Homebrew apt updates.
     os.system("brew update")
     os.system("brew upgrade")
+    # Updates system software
     os.system("softwareupdate -l -i -a")
 
 
