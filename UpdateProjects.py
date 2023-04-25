@@ -1,4 +1,3 @@
-import os
 from UserPaths import *
 from multiprocessing import Process
 
