@@ -9,15 +9,18 @@ def update_apps_debian():
 
     # Runs a series of commands as sudo to install updates.
     if os.system("which nala") == 0:
-        # If nala is installed use that for faster downloads
+        # If nala is installed use that for faster downloads.
         os.system("sudo nala upgrade -y")
     else:
-        # Default command for installing updates
+        # Default command for installing updates.
         os.system("sudo apt update -y")
         os.system("sudo apt upgrade -y")
 
+    # Updates OS, but does not upgrade to new release.
     os.system("sudo apt dist-upgrade -y")
+    # Removes unused dependencies.
     os.system("sudo apt autoremove -y")
+    # Cleans the package lists.
     os.system("sudo apt autoclean -y")
 
 
