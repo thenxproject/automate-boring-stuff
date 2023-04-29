@@ -6,8 +6,14 @@ def update_apps_debian():
     """Update app installed through apt on Debian."""
 
     # Runs a series of commands as sudo to install updates.
-    os.system("sudo apt update -y")
-    os.system("sudo apt upgrade -y")
+    if os.system("which nala") == 0:
+        # If nala is installed use that for faster downloads
+        os.system("sudo nala upgrade -y")
+    else:
+        # Default command for installing updates
+        os.system("sudo apt update -y")
+        os.system("sudo apt upgrade -y")
+
     os.system("sudo apt dist-upgrade -y")
     os.system("sudo apt autoremove -y")
     os.system("sudo apt autoclean -y")
