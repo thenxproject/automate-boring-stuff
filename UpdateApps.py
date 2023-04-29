@@ -49,7 +49,9 @@ def update_apps_mac_os_x():
 def update_apps_windows():
     """Updates apps installed through Windows app store."""
 
+    # Windows app store updates.
     os.system("winget upgrade -h –all --accept-package-agreements --accept-source-agreements")
+    # Windows updates.
     os.system("wuauclt /detectnow /updatenow")
 
 
