@@ -22,6 +22,12 @@ def update_apps_ubuntu():
     os.system("sudo snap refresh")
 
 
+def update_apps_flatpak():
+    """Updates Linux apps installed using Flatpak"""
+    # Runs update for Flatpak command
+    os.system("sudo flatpak update -y")
+
+
 def update_apps_mac_os_x():
     """Updates aps installed through Homebrew, and system updates."""
 
@@ -46,6 +52,10 @@ if __name__ == '__main__':
             update_apps_ubuntu()
         elif "Debian" in os.uname().version:
             update_apps_debian()
+
+        # If flatpak is installed update flatpak apps
+        if os.system("which flatpak") == 0:
+            update_apps_flatpak()
     elif platform.system() == "Darwin":
         update_apps_mac_os_x()
     elif platform.system() == "Windows":
