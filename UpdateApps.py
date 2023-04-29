@@ -1,6 +1,8 @@
 import os
 import platform
 
+import decorators
+
 
 def update_apps_debian():
     """Update app installed through apt on Debian."""
@@ -51,7 +53,9 @@ def update_apps_windows():
     os.system("wuauclt /detectnow /updatenow")
 
 
-if __name__ == '__main__':
+@decorators.run_time
+def update_apps():
+    """Determines the OS and chooses how to update applications."""
     # Detects OS and runs updates for matches.
     if platform.system() == "Linux":
         if "Ubuntu" in os.uname().version:
@@ -66,3 +70,8 @@ if __name__ == '__main__':
         update_apps_mac_os_x()
     elif platform.system() == "Windows":
         update_apps_windows()
+
+
+# Entrypoint for the running of the application
+if __name__ == '__main__':
+    update_apps()
