@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from UserPaths import *
 from multiprocessing import Process
 
