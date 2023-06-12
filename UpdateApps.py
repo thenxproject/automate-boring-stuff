@@ -5,39 +5,49 @@ import platform
 import decorators
 
 
-def update_apps_debian():
-    """Update app installed through apt on Debian."""
+def update_apps_apt():
+    """Update app installed through apt."""
 
     # Runs a series of commands as sudo to install updates.
     if os.system("which nala") == 0:
         # If nala is installed use that for faster downloads.
         os.system("sudo nala upgrade -y")
-    else:
+        # Removes unused dependencies.
+        os.system("sudo nala autoremove -y")
+        os.system("sudo nala autopurge -y")
+    elif os.system("which apt") == 0:
         # Default command for installing updates.
         os.system("sudo apt update -y")
         os.system("sudo apt upgrade -y")
 
-    # Updates OS, but does not upgrade to new release.
-    os.system("sudo apt dist-upgrade -y")
-    # Removes unused dependencies.
-    os.system("sudo apt autoremove -y")
-    # Cleans the package lists.
-    os.system("sudo apt autoclean -y")
+        # Updates OS, but does not upgrade to new release.
+        os.system("sudo apt dist-upgrade -y")
+        # Removes unused dependencies.
+        os.system("sudo apt autoremove -y")
+        # Cleans the package lists.
+        os.system("sudo apt autoclean -y")
 
 
-def update_apps_ubuntu():
-    """Updates apps installed through snap and apt on Ubuntu."""
+def update_apps_snap():
+    """Updates apps installed through snap."""
 
-    # Installs apt package updates.
-    update_apps_debian()
     # Installs snap updates.
-    os.system("sudo snap refresh")
+    if os.system("which snap") == 0:
+        os.system("sudo snap refresh")
 
 
 def update_apps_flatpak():
     """Updates Linux apps installed using Flatpak"""
     # Runs update for Flatpak command
-    os.system("sudo flatpak update -y")
+    if os.system("which flatpak") == 0:
+        os.system("sudo flatpak update -y")
+
+
+def update_apps_dnf():
+    """Updates Linux apps installed using dnf"""
+    # Runs update for Flatpak command
+    if os.system("which dnf") == 0:
+        os.system("sudo dnf --refresh -y upgrade")
 
 
 def update_apps_mac_os_x():
@@ -64,13 +74,9 @@ def update_apps():
     """Determines the OS and chooses how to update applications."""
     # Detects OS and runs updates for matches.
     if platform.system() == "Linux":
-        if "Ubuntu" in os.uname().version:
-            update_apps_ubuntu()
-        elif "Debian" in os.uname().version:
-            update_apps_debian()
-
-        # If flatpak is installed update flatpak apps
-        if os.system("which flatpak") == 0:
+            update_apps_apt()
+            update_apps_dnf()
+            update_apps_snap()
             update_apps_flatpak()
     elif platform.system() == "Darwin":
         update_apps_mac_os_x()
