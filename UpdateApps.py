@@ -54,8 +54,9 @@ def update_apps_mac_os_x():
     """Updates aps installed through Homebrew, and system updates."""
 
     # Runs Homebrew apt updates.
-    os.system("brew update")
-    os.system("brew upgrade")
+    if os.system("which brew") == 0:
+        os.system("brew update")
+        os.system("brew upgrade")
     # Updates system software
     os.system("softwareupdate -l -i -a")
 
