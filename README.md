@@ -15,5 +15,7 @@ Current support is for the following:
 - Homebrew - MacOS X
 - Apt - Debian & Ubuntu
 - Snap - Ubuntu
+- DNF - Fedora
+- APX - Vanilla OS
 #### Example usage
 python3 UpdateApps.py
