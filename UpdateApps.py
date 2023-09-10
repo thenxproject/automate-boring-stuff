@@ -59,6 +59,7 @@ def update_apps_snap():
 
 def update_apps_flatpak():
     """Updates Linux apps installed using Flatpak"""
+
     # Runs update for Flatpak command
     if os.system("which flatpak") == 0:
         os.system("flatpak update -y")
@@ -66,6 +67,7 @@ def update_apps_flatpak():
 
 def update_apps_dnf():
     """Updates Linux apps installed using dnf"""
+
     # Runs update for Flatpak command
     if os.system("which dnf") == 0:
         os.system("sudo dnf --refresh -y upgrade")
@@ -79,7 +81,7 @@ def update_apps_mac_os_x():
         os.system("brew update")
         os.system("brew upgrade")
     # Updates system software
-    os.system("softwareupdate -l -i -a")
+    os.system("softwareupdate -l -i -a -R")
 
 
 def update_apps_windows():
@@ -94,6 +96,7 @@ def update_apps_windows():
 @decorators.run_time
 def update_apps():
     """Determines the OS and chooses how to update applications."""
+
     # Detects OS and runs updates for matches.
     if platform.system() == "Linux":
         update_apps_apx()
