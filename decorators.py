@@ -5,12 +5,12 @@ def run_time(func):
     """Decorator that will calculate the run time of a method and print it to the console."""
 
     # Wrapper around the function used to calculate the run time.
-    def wrapper():
+    def wrapper(*args):
         # Gets the start time
         start = time.time()
 
         # Runs the function that the decorator was placed on.
-        func_output = func()
+        func_output = func(*args)
 
         # Gets the end time and subtracts the start time to get the run time.
         end = time.time()
