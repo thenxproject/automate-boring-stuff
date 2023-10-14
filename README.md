@@ -25,6 +25,7 @@ python3 UpdateApps.py
 This command will clone a folder and all its files. This is useful when creating a backup of a large number of files.
 
 If the destination folder exists only modified files will be copied.
+
 If the destination folder has a file that is not in source directory it will be deleted.
 #### Example usages
 - python3 CloneFolder.py ~/Documents ~/Documents_backup
