@@ -28,40 +28,45 @@ def add_files_to_list(root_dir: str, file_list: dict) -> None:
 
 # Entrypoint for the running of the application
 if __name__ == '__main__':
-    manager = Manager()
-    src = manager.dict({})
-    dst = manager.dict({})
+    if len(sys.argv) == 3:
+        manager = Manager()
+        src = manager.dict({})
+        dst = manager.dict({})
 
-    process_list = []
+        process_list = []
 
-    process = Process(target=add_files_to_list, args=(sys.argv[1], src))
-    process_list.append(process)
-    process.start()
-    process = Process(target=add_files_to_list, args=(sys.argv[2], dst))
-    process_list.append(process)
-    process.start()
+        process = Process(target=add_files_to_list, args=(sys.argv[1], src))
+        process_list.append(process)
+        process.start()
+        process = Process(target=add_files_to_list, args=(sys.argv[2], dst))
+        process_list.append(process)
+        process.start()
 
-    for process in process_list:
-        process.join()
-        process.close()
+        for process in process_list:
+            process.join()
+            process.close()
 
-    delete = [key for key in dst if key not in src.keys()]
-    transfer = [file for file in src if file not in dst.keys() or dst[file] != src[file]]
+        # Filters file lists to delete and copy lists.
+        delete = [key for key in dst if key not in src.keys()]
+        copy = [file for file in src if file not in dst.keys() or dst[file] != src[file]]
 
-    for file in delete:
-        file_path = os.path.expanduser(f"""{sys.argv[2]}{os.path.sep}{file}""")
-        if os.path.exists(file_path):
-            print(f"""Deleting: {file_path}""")
-            os.remove(file_path)
+        # Deletes files in destination that no longer exist in the source folder.
+        for file in delete:
+            file_path = os.path.expanduser(f"""{sys.argv[2]}{os.path.sep}{file}""")
+            if os.path.exists(file_path):
+                os.remove(file_path)
 
-    for file in transfer:
-        src_path = os.path.expanduser(f"""{sys.argv[1]}{os.path.sep}{file}""")
-        dst_path = os.path.expanduser(f"""{sys.argv[2]}{os.path.sep}{file}""")
+        # Copies files that do not exist in the destination folder.
+        for file in copy:
+            src_path = os.path.expanduser(f"""{sys.argv[1]}{os.path.sep}{file}""")
+            dst_path = os.path.expanduser(f"""{sys.argv[2]}{os.path.sep}{file}""")
 
-        dst_folder = os.path.dirname(dst_path)
-        if not os.path.exists(dst_folder):
-            print(f"""Creating folder {dst_folder}""")
-            os.makedirs(dst_folder)
+            # Creates folder if it does not exist
+            dst_folder = os.path.dirname(dst_path)
+            if not os.path.exists(dst_folder):
+                os.makedirs(dst_folder)
 
-        print(f"""Copying: {src_path} to {dst_path}""")
-        shutil.copy(src_path, dst_path)
+            # Copies file from source to destination folder.
+            shutil.copy(src_path, dst_path)
+    else:
+        print("Both source and destination paths are required.")
