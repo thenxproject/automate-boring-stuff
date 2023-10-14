@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 import os
 import platform
-
-import decorators
+from decorators import run_time
 
 
 def update_apps_apt():
@@ -88,12 +87,12 @@ def update_apps_windows():
     """Updates apps installed through Windows app store."""
 
     # Windows app store updates.
-    os.system("winget upgrade -h –all --accept-package-agreements --accept-source-agreements")
+    os.system("winget upgrade -h –all -u --force --disable-interactivity")
     # Windows updates.
-    os.system("wuauclt /detectnow /updatenow")
+    os.system("wuauclt /DetectNow /UpdateNow")
 
 
-@decorators.run_time
+@run_time
 def update_apps():
     """Determines the OS and chooses how to update applications."""
 
