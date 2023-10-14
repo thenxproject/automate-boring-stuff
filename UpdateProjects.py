@@ -10,8 +10,11 @@ def update_project_code(project_directory):
 
 if __name__ == '__main__':
     projects = get_git_projects()
+    process_list = []
     for project in projects:
-        process = Process(update_project_code(project))
+        process = Process(target=update_project_code, args=(project,))
+        process_list.append(process)
         process.start()
-        process.join()
 
+    for process in process_list:
+        process.join()
