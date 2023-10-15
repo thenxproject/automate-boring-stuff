@@ -6,7 +6,7 @@ Python tools to automate boring stuff. This is the start of a collection of tool
 #### Description 
 This command is intended to update Idea IntelliJ and PyCharm git repositories. It expects the projects to be in the PyCharmProjects and IdeaProjects directories withing the users home directory because that is the default. It uses parallel processing to update multiple repositories at the same time.
 #### Example usage
-python3 UpdateProjects.py
+`python3 UpdateProjects.py`
 
 ### UpdateApps
 #### Description
@@ -18,7 +18,7 @@ Current support is for the following:
 - DNF - Fedora
 - APX - Vanilla OS
 #### Example usage
-python3 UpdateApps.py
+`python3 UpdateApps.py`
 
 ### CloneFolder
 #### Description
@@ -28,6 +28,6 @@ If the destination folder exists only modified files will be copied.
 
 If the destination folder has a file that is not in source directory it will be deleted.
 #### Example usages
-- python3 CloneFolder.py ~/Documents ~/Documents_backup
-- python3 CloneFolder.py ~/Documents "~/Documents Backup"
-- python3 CloneFolder.py
+`python3 CloneFolder.py ~/Documents ~/Documents_backup`
+`python3 CloneFolder.py ~/Documents "~/Documents Backup"`
+`python3 CloneFolder.py`
