@@ -107,6 +107,8 @@ if __name__ == '__main__':
             print("Both source and destination paths are required.")
             if src_path == "":
                 src_path = input("What folder do you want to copy?\n")
+                while not os.path.exists(os.path.expanduser(src_path)):
+                    src_path = input(f"Tha folder {src_path} does not exist please try again.\n")
             if dst_path == "":
                 dst_path = input("Where do you want copy the files to?\n")
 

@@ -12,7 +12,7 @@ This command is intended to update Idea IntelliJ and PyCharm git repositories. I
 #### Description
 This command will update installed apps through various package managers. OS is detected and updates run now special steps needed.
 Current support is for the following:
-- Homebrew - MacOS X
+- Homebrew - Mac OS X
 - Apt - Debian & Ubuntu
 - Snap - Ubuntu
 - DNF - Fedora
