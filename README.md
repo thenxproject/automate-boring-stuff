@@ -27,6 +27,8 @@ This command will clone a folder and all its files. This is useful when creating
 If the destination folder exists only modified files will be copied.
 
 If the destination folder has a file that is not in source directory it will be deleted.
+
+The CloneFolder.py file can not be in the directory tree being copied.
 #### Example usages
 `python3 CloneFolder.py ~/Documents ~/Documents_backup`
 
