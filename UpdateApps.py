@@ -30,17 +30,26 @@ def update_apps_apt():
 def update_apps_vso():
     """Updates Vanilla OS using VSO"""
 
-    # If VSO command exists rus commands tp update system
+    # If VSO command exists rus commands to update system
     if os.system("which vso") == 0:
         # Updates system
         os.system("sudo vso update-check")
         os.system("sudo vso trigger-update --now")
 
 
+def update_apps_rpm_ostree():
+    """Updates Fedora Silverblue using rpm-ostree"""
+
+    # If rpm-ostree command exists rus commands to update system
+    if os.system("which rpm-ostree") == 0:
+        # Updates system
+        os.system("rpm-ostree upgrade")
+
+
 def update_apps_apx():
     """Updates apps on Vanilla OS that are not installed using Flatpak"""
 
-    # If APX command exists rus commands tp update apps
+    # If APX command exists rus commands to update apps
     if os.system("which apx") == 0:
         # APT, AUR, DNF apps
         os.system("apx update --all -y")
@@ -100,6 +109,7 @@ def update_apps():
     if platform.system() == "Linux":
         update_apps_apx()
         update_apps_vso()
+        update_apps_rpm_ostree()
         update_apps_apt()
         update_apps_dnf()
         update_apps_snap()
