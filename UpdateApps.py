@@ -89,7 +89,7 @@ def update_apps_mac_os_x():
         os.system("brew update")
         os.system("brew upgrade")
     # Updates system software
-    os.system("softwareupdate -l -i -a -R")
+    os.system("sudo softwareupdate -l -i -a -R")
 
 
 def update_apps_windows():
