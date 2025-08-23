@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import shutil
 
 
 def get_files_in_directory(path: str) -> list[str]:
@@ -17,7 +18,8 @@ def convert_file(path: str, file_name: str) -> None:
     os.system(f"""HandBrakeCLI -i "{input_file}" -o "{output_file}" --preset "HQ 1080p30 Surround" -v 0""")
 
     # Moves the original file to a temp backup directory
-    os.rename(input_file, f"/mnt/Temp/Backup/{file_name}")
+    shutil.copy2(input_file, f"/mnt/Temp/Backup/{file_name}")
+    os.remove(input_file)
 
 
 def convert_movies() -> None:
