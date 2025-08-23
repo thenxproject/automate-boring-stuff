@@ -12,7 +12,12 @@ def get_sub_directories(path: str) -> list[str]:
 
 
 def convert_file(path: str, file_name: str) -> None:
-    os.system(f"""HandBrakeCLI -i "{path}/{file_name}" -o "/mnt/Temp/Converted/{file_name.replace(".mkv", ".mp4")}" --preset "HQ 1080p30 Surround" -v 0""")
+    input_file = f"{path}/{file_name}"
+    output_file = f"{path}/{file_name.replace('.mkv', '.mp4')}"
+    os.system(f"""HandBrakeCLI -i "{input_file}" -o "{output_file}" --preset "HQ 1080p30 Surround" -v 0""")
+
+    # Moves the original file to a temp backup directory
+    os.rename(input_file, f"/mnt/Temp/Backup/{file_name}")
 
 
 def convert_movies() -> None:
@@ -38,4 +43,4 @@ def convert_tv() -> None:
 # Entrypoint for the running of the application
 if __name__ == '__main__':
     convert_movies()
-    convert_tv()
+    #convert_tv()
