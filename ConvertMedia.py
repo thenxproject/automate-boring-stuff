@@ -44,4 +44,4 @@ def convert_tv() -> None:
 # Entrypoint for the running of the application
 if __name__ == '__main__':
     convert_movies()
-    #convert_tv()
+    convert_tv()
