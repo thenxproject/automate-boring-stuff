@@ -4,12 +4,11 @@ import shutil
 
 
 def get_files_in_directory(path: str) -> list[str]:
-    return [file for file in os.listdir(os.path.expanduser(path)) if file.endswith(".mkv")]
+    return sorted([file for file in os.listdir(os.path.expanduser(path)) if file.endswith(".mkv")])
 
 
 def get_sub_directories(path: str) -> list[str]:
-    return [folder for folder in os.listdir(os.path.expanduser(path)) if not folder.startswith(".")]
-
+    return sorted([folder for folder in os.listdir(os.path.expanduser(path)) if not folder.startswith(".")])
 
 
 def convert_file(path: str, file_name: str) -> None:
