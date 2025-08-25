@@ -4,43 +4,51 @@ import platform
 from decorators import run_time
 
 
+def use_sudo() -> str:
+    """Checks if sudo is installed and returns the sudo command if it is."""
+    if os.system("which sudo") == 0:
+        return "sudo"
+    
+    return ""
+
+
 def update_apps_apt():
     """Update app installed through apt."""
 
     # Runs a series of commands as sudo to install updates.
     if os.system("which nala") == 0:
-        # If nala is installed use that for faster downloads.
-        os.system("sudo nala upgrade -y")
+        # If nala is installed, use that for faster downloads.
+        os.system(f"{use_sudo()} nala upgrade -y")
         # Removes unused dependencies.
-        os.system("sudo nala autoremove -y")
-        os.system("sudo nala autopurge -y")
+        os.system(f"{use_sudo()} nala autoremove -y")
+        os.system(f"{use_sudo()} nala autopurge -y")
     elif os.system("which apt") == 0:
         # Default command for installing updates.
-        os.system("sudo apt update -y")
-        os.system("sudo apt upgrade -y")
+        os.system(f"{use_sudo()} apt update -y")
+        os.system(f"{use_sudo()} apt upgrade -y")
 
-        # Updates OS, but does not upgrade to new release.
-        os.system("sudo apt dist-upgrade -y")
+        # Updates OS but does not upgrade to a new release
+        os.system(f"{use_sudo()} apt dist-upgrade -y")
         # Removes unused dependencies.
-        os.system("sudo apt autoremove -y")
+        os.system(f"{use_sudo()} apt autoremove -y")
         # Cleans the package lists.
-        os.system("sudo apt autoclean -y")
+        os.system(f"{use_sudo()} apt autoclean -y")
 
 
 def update_apps_vso():
     """Updates Vanilla OS using VSO"""
 
-    # If VSO command exists rus commands to update system
+    # If VSO command exists, rus commands to update apps
     if os.system("which vso") == 0:
         # Updates system
-        os.system("sudo vso update-check")
-        os.system("sudo vso trigger-update --now")
+        os.system(f"{use_sudo()} vso update-check")
+        os.system(f"{use_sudo()} vso trigger-update --now")
 
 
 def update_apps_rpm_ostree():
     """Updates Fedora Silverblue using rpm-ostree"""
 
-    # If rpm-ostree command exists rus commands to update system
+    # If rpm-ostree command exists rus commands to update apps
     if os.system("which rpm-ostree") == 0:
         # Updates system
         os.system("rpm-ostree upgrade")
@@ -49,7 +57,7 @@ def update_apps_rpm_ostree():
 def update_apps_apx():
     """Updates apps on Vanilla OS that are not installed using Flatpak"""
 
-    # If APX command exists rus commands to update apps
+    # If APX command exists, rus commands to update apps
     if os.system("which apx") == 0:
         # APT, AUR, DNF apps
         os.system("apx update --all -y")
@@ -62,7 +70,7 @@ def update_apps_snap():
 
     # Installs snap updates.
     if os.system("which snap") == 0:
-        os.system("sudo snap refresh")
+        os.system(f"{use_sudo()} snap refresh")
 
 
 def update_apps_flatpak():
@@ -78,7 +86,7 @@ def update_apps_dnf():
 
     # Runs update for Flatpak command
     if os.system("which dnf") == 0:
-        os.system("sudo dnf --refresh -y upgrade")
+        os.system(f"{use_sudo()} dnf --refresh -y upgrade")
 
 
 def update_apps_mac_os_x():
@@ -89,11 +97,11 @@ def update_apps_mac_os_x():
         os.system("brew update")
         os.system("brew upgrade")
     # Updates system software
-    os.system("sudo softwareupdate -l -i -a -R")
+    os.system(f"{use_sudo()} softwareupdate -l -i -a -R")
 
 
 def update_apps_windows():
-    """Updates apps installed through Windows app store."""
+    """Updates apps installed through the Windows app store."""
 
     # Windows app store updates.
     os.system("winget upgrade -h –all -u --force --disable-interactivity")
