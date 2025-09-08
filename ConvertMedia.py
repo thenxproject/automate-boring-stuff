@@ -24,7 +24,7 @@ def convert_file(path: str, file_name: str) -> None:
     os.system(f"""HandBrakeCLI -i "{input_file}" -o "{output_file}" --preset "HQ 1080p30 Surround" -v 0 > /dev/null 2>&1""")
 
     # Moves the original file to a temp backup directory
-    os.system(f'''mv "{input_file}" "/mnt/Temp/Backup/{file_name}" > /dev/null 2>&1''')
+    os.system(f'''mv "{input_file}" "/mnt/Temp/Backup/{input_file.replace(f"{path}/", '')}" > /dev/null 2>&1''')
 
 
 def convert_movies() -> None:
