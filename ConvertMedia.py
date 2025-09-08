@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 import os
 import shutil
+import re
+
+
+file_extensions = (".mkv", ".m2ts", ".avi")
 
 
 def get_files_in_directory(path: str) -> list[str]:
-    return sorted([file for file in os.listdir(os.path.expanduser(path)) if file.endswith(".mkv")])
+    return sorted([file for file in os.listdir(os.path.expanduser(path)) if file.endswith(file_extensions)])
 
 
 def get_sub_directories(path: str) -> list[str]:
@@ -13,11 +17,14 @@ def get_sub_directories(path: str) -> list[str]:
 
 def convert_file(path: str, file_name: str) -> None:
     input_file = f"{path}/{file_name}"
-    output_file = f"{path}/{file_name.replace('.mkv', '.mp4')}"
-    os.system(f"""HandBrakeCLI -i "{input_file}" -o "{output_file}" --preset "HQ 1080p30 Surround" -v 0""")
+    for extension in list(file_extensions):
+        file_name = file_name.replace(extension, '.mp4')
+    output_file = f"{path}/{file_name}"
+    print(f"Converting {re.search(r".*(Movies|TV).*", path).group(1)}: {input_file.replace(f"{path}/", '')} > {file_name}")
+    os.system(f"""HandBrakeCLI -i "{input_file}" -o "{output_file}" --preset "HQ 1080p30 Surround" -v 0 > /dev/null 2>&1""")
 
     # Moves the original file to a temp backup directory
-    os.system(f'''mv "{input_file}" "/mnt/Temp/Backup/{file_name}"''')
+    os.system(f'''mv "{input_file}" "/mnt/Temp/Backup/{file_name}" > /dev/null 2>&1''')
 
 
 def convert_movies() -> None:
