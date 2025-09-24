@@ -21,7 +21,7 @@ def convert_file(path: str, file_name: str) -> None:
         file_name = file_name.replace(extension, '.mp4')
     output_file = f"{path}/{file_name}"
     print(f"Converting {re.search(r".*(Movies|TV).*", path).group(1)}: {input_file.replace(f"{path}/", '')} > {file_name}")
-    os.system(f"""HandBrakeCLI -i "{input_file}" -o "{output_file}" --audio-lang-list eng --subtitle none --preset "HQ 1080p30 Surround" -v 0 > /dev/null 2>&1""")
+    os.system(f"""HandBrakeCLI -i "{input_file}" -o "{output_file}" --audio-lang-list eng,jpn,und --subtitle none --preset "HQ 1080p30 Surround" -v 0 > /dev/null 2>&1""")
 
     # Moves the original file to a temp backup directory
     os.system(f'''mv "{input_file}" "/mnt/Temp/Backup/{input_file.replace(f"{path}/", '')}" > /dev/null 2>&1''')
