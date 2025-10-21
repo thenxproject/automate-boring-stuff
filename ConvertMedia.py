@@ -2,9 +2,22 @@
 import os
 import shutil
 import re
+import resource
+import psutil
 
 
 file_extensions = (".mkv", ".m2ts", ".avi")
+
+
+def limit_memory(max_memory_gb: int = 12):
+    max_memory_bytes = max_memory_gb * 1024 * 1024 * 1024
+    resource.setrlimit(resource.RLIMIT_AS, (max_memory_bytes, max_memory_bytes * 2))
+
+
+def limit_cpu(number_of_cores: int = os.cpu_count() // 2):
+    number_of_cores_to_use = list(range(number_of_cores))
+    process = psutil.Process(os.getpid())
+    process.cpu_affinity(number_of_cores_to_use)
 
 
 def get_files_in_directory(path: str) -> list[str]:
@@ -49,5 +62,7 @@ def convert_tv() -> None:
 
 # Entrypoint for the running of the application
 if __name__ == '__main__':
+    limit_memory()
+    limit_cpu()
     convert_movies()
     convert_tv()
