@@ -14,7 +14,7 @@ def limit_memory(max_memory_gb: int = 12):
     resource.setrlimit(resource.RLIMIT_AS, (max_memory_bytes, max_memory_bytes * 2))
 
 
-def limit_cpu(number_of_cores: int = os.cpu_count() // 2):
+def limit_cpu(number_of_cores: int = int(os.cpu_count() * .75)):
     number_of_cores_to_use = list(range(number_of_cores))
     process = psutil.Process(os.getpid())
     process.cpu_affinity(number_of_cores_to_use)
