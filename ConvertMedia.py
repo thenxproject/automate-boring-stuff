@@ -9,7 +9,7 @@ import psutil
 file_extensions = (".mkv", ".m2ts", ".avi")
 
 
-def limit_memory(max_memory_gb: int = 24):
+def limit_memory(max_memory_gb: int = 48):
     max_memory_bytes = max_memory_gb * 1024 * 1024 * 1024
     resource.setrlimit(resource.RLIMIT_AS, (max_memory_bytes, max_memory_bytes * 2))
 
