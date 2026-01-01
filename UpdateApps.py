@@ -81,21 +81,34 @@ def update_apps_flatpak():
         os.system("flatpak update -y")
 
 
+def update_apps_apk():
+    """Updates Linux apps installed using Alpine's APK package manager"""
+
+    # Runs update for APK command
+    if os.system("which apk") == 0:
+        os.system("apk update")
+        os.system("apk upgrade")
+
+
 def update_apps_dnf():
     """Updates Linux apps installed using dnf"""
 
-    # Runs update for Flatpak command
+    # Runs update for DNF command
     if os.system("which dnf") == 0:
         os.system(f"{use_sudo()} dnf --refresh -y upgrade")
 
 
-def update_apps_mac_os_x():
-    """Updates aps installed through Homebrew, and system updates."""
+def update_apps_homebrew():
+    """Updates apps installed through Homebrew"""
 
     # Runs Homebrew apt updates.
     if os.system("which brew") == 0:
         os.system("brew update")
         os.system("brew upgrade")
+
+
+def update_apps_mac_os_x():
+    """Updates aps installed through Homebrew, and system updates."""
     # Updates system software
     os.system(f"{use_sudo()} softwareupdate -l -i -a -R")
 
@@ -122,8 +135,11 @@ def update_apps():
         update_apps_dnf()
         update_apps_snap()
         update_apps_flatpak()
+        update_apps_apk()
+        update_apps_homebrew()
     elif platform.system() == "Darwin":
         update_apps_mac_os_x()
+        update_apps_homebrew()
     elif platform.system() == "Windows":
         update_apps_windows()
 
