@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import os
-import shutil
 import re
 import resource
+import subprocess
+
 import psutil
 
 
@@ -34,7 +35,17 @@ def convert_file(path: str, file_name: str) -> None:
         file_name = file_name.replace(extension, '.mp4')
     output_file = f"{path}/{file_name}"
     print(f"Converting {re.search(r".*(Movies|TV).*", path).group(1)}: {input_file.replace(f"{path}/", '')} > {file_name}")
-    os.system(f"""HandBrakeCLI -i "{input_file}" -o "{output_file}" --audio-lang-list eng,jpn,und --subtitle none --preset "HQ 1080p30 Surround" -v 0 > /dev/null 2>&1""")
+
+    gpu_flag = ""
+    match subprocess.check_output('lspci | grep -E "VGA|3D"', shell=True).decode('utf-8'):
+        case gpu if "nvidia" in gpu.lower():
+            gpu_flag = "--encoder nvenc_h264"
+        case gpu if "amd" in gpu.lower():
+            gpu_flag = "--encoder vce_h264"
+        case _:
+            gpu_flag = ""
+
+    os.system(f"""HandBrakeCLI -i "{input_file}" -o "{output_file}" --audio-lang-list eng,jpn,und --subtitle none {gpu_flag} --preset "HQ 1080p30 Surround" -v 0 > /dev/null 2>&1""")
 
     # Moves the original file to a temp backup directory
     os.system(f'''mv "{input_file}" "/mnt/Temp/Backup/{input_file.replace(f"{path}/", '')}" > /dev/null 2>&1''')
