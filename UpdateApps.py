@@ -98,6 +98,14 @@ def update_apps_dnf():
         os.system(f"{use_sudo()} dnf --refresh -y upgrade")
 
 
+def update_apps_pacman():
+    """Updates Linux apps installed using pacman"""
+
+    # Runs update for PACMAN command
+    if os.system("which pacman") == 0:
+        os.system(f"{use_sudo()} pacman -Syu")
+
+
 def update_apps_homebrew():
     """Updates apps installed through Homebrew"""
 
@@ -136,6 +144,7 @@ def update_apps():
         update_apps_snap()
         update_apps_flatpak()
         update_apps_apk()
+        update_apps_pacman()
         update_apps_homebrew()
     elif platform.system() == "Darwin":
         update_apps_mac_os_x()
