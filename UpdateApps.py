@@ -106,6 +106,14 @@ def update_apps_pacman():
         os.system(f"{use_sudo()} pacman -Syu")
 
 
+def update_apps_pacman_aur():
+    """Updates Linux apps installed using pacman-aur"""
+    if os.system("which yay") == 0:
+        os.system(f"{use_sudo()} yay -Syu")
+    elif os.system("which paru") == 0:
+        os.system(f"{use_sudo()} paru -Syu")
+
+
 def update_apps_homebrew():
     """Updates apps installed through Homebrew"""
 
@@ -145,6 +153,7 @@ def update_apps():
         update_apps_flatpak()
         update_apps_apk()
         update_apps_pacman()
+        update_apps_pacman_aur()
         update_apps_homebrew()
     elif platform.system() == "Darwin":
         update_apps_mac_os_x()
