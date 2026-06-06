@@ -109,9 +109,9 @@ def update_apps_pacman():
 def update_apps_pacman_aur():
     """Updates Linux apps installed using pacman-aur"""
     if os.system("which yay") == 0:
-        os.system(f"{use_sudo()} yay -Syu")
+        os.system(f"yay -Syu")
     elif os.system("which paru") == 0:
-        os.system(f"{use_sudo()} paru -Syu")
+        os.system("paru -Syu")
 
 
 def update_apps_homebrew():
