@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
+import subprocess
 from UserPaths import *
 from multiprocessing import Process
 
 
 def update_project_code(project_directory):
     """Runs the git command to silently pull the git repository in the specified directory."""
-    os.system(f"git -C {project_directory} pull -q")
+    subprocess.run(["git", "-C", project_directory, "pull", "-q"])
 
 
 if __name__ == '__main__':

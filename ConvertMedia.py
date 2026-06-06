@@ -2,7 +2,9 @@
 import os
 import re
 import resource
+import shutil
 import subprocess
+import time
 
 import psutil
 
@@ -36,10 +38,23 @@ def convert_file(path: str, file_name: str) -> None:
     output_file = f"{path}/{file_name}"
     print(f"Converting {re.search(r".*(Movies|TV).*", path).group(1)}: {input_file.replace(f"{path}/", '')} > {file_name}")
 
-    os.system(f"""HandBrakeCLI -i "{input_file}" -o "{output_file}" --audio-lang-list eng,jpn,und --subtitle none --preset "HQ 1080p30 Surround" -v 0 > /dev/null 2>&1""")
+    subprocess.run(
+        ["HandBrakeCLI", "-i", input_file, "-o", output_file,
+         "--audio-lang-list", "eng,jpn,und",
+         "--subtitle", "none",
+         "--preset", "HQ 1080p30 Surround",
+         "-v", "0"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
 
     # Moves the original file to a temp backup directory
-    os.system(f'''mv "{input_file}" "/mnt/Temp/Backup/{input_file.replace(f"{path}/", '')}" > /dev/null 2>&1''')
+    shutil.move(input_file, f"/mnt/Temp/Backup/{input_file.replace(f'{path}/', '')}")
+
+    # Removes backups over 2 months old
+    for file in os.listdir(f"/mnt/Temp/Backup"):
+        if os.path.getmtime(f"/mnt/Temp/Backup/{file}") < (time.time() - (2 * 30 * 24 * 60 * 60)):
+            os.remove(f"/mnt/Temp/Backup/{file}")
 
 
 def convert_movies() -> None:

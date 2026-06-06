@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-import os
+import shutil
+import subprocess
 import platform
 from decorators import run_time
 
 
 def use_sudo() -> str:
     """Checks if sudo is installed and returns the sudo command if it is."""
-    if os.system("which sudo") == 0:
+    if shutil.which("sudo") is not None:
         return "sudo"
-    
+
     return ""
 
 
@@ -16,126 +17,126 @@ def update_apps_apt():
     """Update app installed through apt."""
 
     # Runs a series of commands as sudo to install updates.
-    if os.system("which nala") == 0:
+    if shutil.which("nala") is not None:
         # If nala is installed, use that for faster downloads.
-        os.system(f"{use_sudo()} nala upgrade -y")
+        subprocess.run(f"{use_sudo()} nala upgrade -y", shell=True)
         # Removes unused dependencies.
-        os.system(f"{use_sudo()} nala autoremove -y")
-        os.system(f"{use_sudo()} nala autopurge -y")
-    elif os.system("which apt") == 0:
+        subprocess.run(f"{use_sudo()} nala autoremove -y", shell=True)
+        subprocess.run(f"{use_sudo()} nala autopurge -y", shell=True)
+    elif shutil.which("apt") is not None:
         # Default command for installing updates.
-        os.system(f"{use_sudo()} apt update -y")
-        os.system(f"{use_sudo()} apt upgrade -y")
+        subprocess.run(f"{use_sudo()} apt update -y", shell=True)
+        subprocess.run(f"{use_sudo()} apt upgrade -y", shell=True)
 
         # Updates OS but does not upgrade to a new release
-        os.system(f"{use_sudo()} apt dist-upgrade -y")
+        subprocess.run(f"{use_sudo()} apt dist-upgrade -y", shell=True)
         # Removes unused dependencies.
-        os.system(f"{use_sudo()} apt autoremove -y")
+        subprocess.run(f"{use_sudo()} apt autoremove -y", shell=True)
         # Cleans the package lists.
-        os.system(f"{use_sudo()} apt autoclean -y")
+        subprocess.run(f"{use_sudo()} apt autoclean -y", shell=True)
 
 
 def update_apps_vso():
     """Updates Vanilla OS using VSO"""
 
     # If VSO command exists, rus commands to update apps
-    if os.system("which vso") == 0:
+    if shutil.which("vso") is not None:
         # Updates system
-        os.system(f"{use_sudo()} vso update-check")
-        os.system(f"{use_sudo()} vso trigger-update --now")
+        subprocess.run(f"{use_sudo()} vso update-check", shell=True)
+        subprocess.run(f"{use_sudo()} vso trigger-update --now", shell=True)
 
 
 def update_apps_rpm_ostree():
     """Updates Fedora Silverblue using rpm-ostree"""
 
     # If rpm-ostree command exists rus commands to update apps
-    if os.system("which rpm-ostree") == 0:
+    if shutil.which("rpm-ostree") is not None:
         # Updates system
-        os.system("rpm-ostree upgrade")
+        subprocess.run("rpm-ostree upgrade", shell=True)
 
 
 def update_apps_apx():
     """Updates apps on Vanilla OS that are not installed using Flatpak"""
 
     # If APX command exists, rus commands to update apps
-    if os.system("which apx") == 0:
+    if shutil.which("apx") is not None:
         # APT, AUR, DNF apps
-        os.system("apx update --all -y")
-        os.system("apx upgrade --all -y")
-        os.system("apx autoremove --all")
+        subprocess.run("apx update --all -y", shell=True)
+        subprocess.run("apx upgrade --all -y", shell=True)
+        subprocess.run("apx autoremove --all", shell=True)
 
 
 def update_apps_snap():
     """Updates apps installed through snap."""
 
     # Installs snap updates.
-    if os.system("which snap") == 0:
-        os.system(f"{use_sudo()} snap refresh")
+    if shutil.which("snap") is not None:
+        subprocess.run(f"{use_sudo()} snap refresh", shell=True)
 
 
 def update_apps_flatpak():
     """Updates Linux apps installed using Flatpak"""
 
     # Runs update for Flatpak command
-    if os.system("which flatpak") == 0:
-        os.system("flatpak update -y")
+    if shutil.which("flatpak") is not None:
+        subprocess.run("flatpak update -y", shell=True)
 
 
 def update_apps_apk():
     """Updates Linux apps installed using Alpine's APK package manager"""
 
     # Runs update for APK command
-    if os.system("which apk") == 0:
-        os.system("apk update")
-        os.system("apk upgrade")
+    if shutil.which("apk") is not None:
+        subprocess.run("apk update", shell=True)
+        subprocess.run("apk upgrade", shell=True)
 
 
 def update_apps_dnf():
     """Updates Linux apps installed using dnf"""
 
     # Runs update for DNF command
-    if os.system("which dnf") == 0:
-        os.system(f"{use_sudo()} dnf --refresh -y upgrade")
+    if shutil.which("dnf") is not None:
+        subprocess.run(f"{use_sudo()} dnf --refresh -y upgrade", shell=True)
 
 
 def update_apps_pacman():
     """Updates Linux apps installed using pacman"""
 
     # Runs update for PACMAN command
-    if os.system("which pacman") == 0:
-        os.system(f"{use_sudo()} pacman -Syu")
+    if shutil.which("pacman") is not None:
+        subprocess.run(f"{use_sudo()} pacman -Syuq", shell=True)
 
 
 def update_apps_pacman_aur():
     """Updates Linux apps installed using pacman-aur"""
-    if os.system("which yay") == 0:
-        os.system(f"yay -Syu")
-    elif os.system("which paru") == 0:
-        os.system("paru -Syu")
+    if shutil.which("yay") is not None:
+        subprocess.run("yay -Syuq", shell=True)
+    elif shutil.which("paru") is not None:
+        subprocess.run("paru -Syuq", shell=True)
 
 
 def update_apps_homebrew():
     """Updates apps installed through Homebrew"""
 
     # Runs Homebrew apt updates.
-    if os.system("which brew") == 0:
-        os.system("brew update")
-        os.system("brew upgrade")
+    if shutil.which("brew") is not None:
+        subprocess.run("brew update", shell=True)
+        subprocess.run("brew upgrade", shell=True)
 
 
 def update_apps_mac_os_x():
     """Updates aps installed through Homebrew, and system updates."""
     # Updates system software
-    os.system(f"{use_sudo()} softwareupdate -l -i -a -R")
+    subprocess.run(f"{use_sudo()} softwareupdate -l -i -a -R", shell=True)
 
 
 def update_apps_windows():
     """Updates apps installed through the Windows app store."""
 
     # Windows app store updates.
-    os.system("winget upgrade -h –all -u --force --disable-interactivity")
+    subprocess.run("winget upgrade -h –all -u --force --disable-interactivity", shell=True)
     # Windows updates.
-    os.system("wuauclt /DetectNow /UpdateNow")
+    subprocess.run("wuauclt /DetectNow /UpdateNow", shell=True)
 
 
 @run_time
