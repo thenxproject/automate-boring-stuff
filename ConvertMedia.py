@@ -40,7 +40,7 @@ def convert_file(path: str, file_name: str) -> None:
 
     subprocess.run(
         ["HandBrakeCLI", "-i", input_file, "-o", output_file,
-         "--audio-lang-list", "eng,jpn,und",
+         "--audio-lang-list", "eng,jpn,kor,chi,zho,und",
          "--subtitle", "none",
          "--preset", "HQ 1080p30 Surround",
          "-v", "0"],
