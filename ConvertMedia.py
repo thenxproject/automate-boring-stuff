@@ -28,7 +28,8 @@ def get_files_in_directory(path: str) -> list[str]:
 
 
 def get_sub_directories(path: str) -> list[str]:
-    return sorted([folder for folder in os.listdir(os.path.expanduser(path)) if not folder.startswith(".")])
+    return sorted([folder for folder in os.listdir(os.path.expanduser(path))
+                   if not folder.startswith(".") and os.path.isdir(os.path.join(os.path.expanduser(path), folder))])
 
 
 def convert_file(path: str, file_name: str) -> None:
@@ -71,10 +72,16 @@ def convert_tv() -> None:
     shows = get_sub_directories("/mnt/TV2")
     for show in shows:
         seasons = get_sub_directories(f"/mnt/TV2/{show}")
-        for season in seasons:
-            episodes = get_files_in_directory(f"/mnt/TV2/{show}/{season}")
+        # If anime and absolute order naming is used, no season folders are present
+        if len(seasons) == 0:
+            episodes = get_files_in_directory(f"/mnt/TV2/{show}")
             for episode in episodes:
-                convert_file(f"/mnt/TV2/{show}/{season}", episode)
+                convert_file(f"/mnt/TV2/{show}", episode)
+        else:
+            for season in seasons:
+                episodes = get_files_in_directory(f"/mnt/TV2/{show}/{season}")
+                for episode in episodes:
+                    convert_file(f"/mnt/TV2/{show}/{season}", episode)
 
 
 # Entrypoint for the running of the application
